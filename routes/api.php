@@ -14,15 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//api/auth/register; route
-route::prefix('auth')->group(function(){
+//api/auth/
+route::group(['prefix' => 'auth', 'middleware' => 'cors'], function(){
   route::post('register', 'Auth\AuthController@register');
   route::post('login', 'Auth\AuthController@login');
   route::get('logout', 'Auth\AuthController@logout')->middleware('auth:api');
   route::get('user', 'Auth\AuthController@getUser')->middleware('auth:api');
 });
 
+
 //api/fake-data/faker; route
 route::prefix('fake-data')->group(function(){
-  route::get('/faker', 'FakeController@index');
+  route::get('/faker', 'FakeController@index')->middleware('auth:api');
 });
