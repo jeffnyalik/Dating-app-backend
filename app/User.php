@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Models\Country\Country;
+use App\Models\Gender\Gender;
+use App\Models\Photos\Photo;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,9 +19,18 @@ class User extends Authenticatable
      *
      * @var array
      */
+    public $timestamps = false;
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 
+        'email',
+        'password',
+        'gender_id',
+        'country_id',
+        'dob',
+        'city',
+        'image'
     ];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -36,5 +48,22 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'dob' => 'datetime',
     ];
+
+    public function photos()
+    {
+        return $this->belongsTo(Photo::class, 'photo_id');
+    }
+
+    public function genders()
+    {
+        return $this->belongsTo(Gender::class, 'gender_id');
+    }
+
+    public function countries()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+   
 }

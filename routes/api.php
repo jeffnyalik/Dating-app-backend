@@ -19,9 +19,16 @@ route::group(['prefix' => 'auth', 'middleware' => 'cors'], function(){
   route::post('register', 'Auth\AuthController@register');
   route::post('login', 'Auth\AuthController@login');
   route::get('logout', 'Auth\AuthController@logout')->middleware('auth:api');
-  route::get('user', 'Auth\AuthController@getUser')->middleware('auth:api');
+  // route::get('user', 'Auth\AuthController@getUser')->middleware('auth:api');
+  route::get('profile', 'Auth\AuthController@getProfile')->middleware('auth:api');
+  route::get('users', 'Auth\AuthController@allUsers')->middleware('auth:api');
+  route::post('update-profile', 'Auth\AuthController@updateProfile')->middleware('auth:api');
 });
 
+Route::group(['prefix' => 'user', 'middlware' => 'cors'], function(){
+  route::get('photos', 'Photos\PhotoController@index');
+  route::post('add_photos', 'Photos\PhotoController@store');
+});
 
 //api/fake-data/faker; route
 route::prefix('fake-data')->group(function(){
