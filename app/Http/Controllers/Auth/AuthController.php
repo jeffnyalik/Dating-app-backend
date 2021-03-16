@@ -12,6 +12,7 @@ use Illuminate\Http\Client\ResponseSequence;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -80,9 +81,9 @@ class AuthController extends Controller
         return response($response, 200);
     }
 
-    // public function getUser(Request $request){
-    //     return $request->user();
-    // }
+    public function getUser(Request $request){
+        return $request->user();
+    }
 
     public function getProfile()
     {   
@@ -129,7 +130,18 @@ class AuthController extends Controller
     public function allUsers()
     {
         $users = UserResource::collection(User::all());
-        return response(['users' => $users], 201);
+        return response()->json($users);
+    }
+
+    //get a specific user
+    public function getOneUser($id)
+    {  
+        try {
+            $user = User::findOrFail($id);
+            return response()->json($user, 200);
+        } catch (\Throwable $th) {
+           return response(['Error' => 'USER NOT FOUND'], 404);
+        }
     }
 
 }

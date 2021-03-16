@@ -28,7 +28,7 @@ class User extends Authenticatable
         'country_id',
         'dob',
         'city',
-        'image'
+        'image',
     ];
 
 
@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     public function photos()
     {
-        return $this->belongsTo(Photo::class, 'photo_id');
+        return $this->belongsTo(Photo::class, 'photo_id', 'id');
     }
 
     public function genders()
