@@ -24,16 +24,17 @@ class UserResource extends JsonResource
             'knownAs' => $this->known_as,
             'bio' => $this->bio,
             'lookingFor' => $this->looking_for,
-            'last_active' => $this->last_active,
+            'lastActive' => $this->last_active,
+            'createdAt' => $this->created_at,
             'hobbies' => $this->interests,
+            'age' => $this->age,
             'language' => $this->language,
             'city' => $this->city,
             'dob' => $this->dob,
             'image' => $this->image,
+            'photos' => new PhotoResource($this->photos),
             'gender' => new GenderResource($this->genders),
             'country' => new CountryResource($this->countries),
-
-
         ];
     }
 }

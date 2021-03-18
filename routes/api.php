@@ -15,20 +15,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 //api/auth/
-route::group(['prefix' => 'auth', 'middleware' => 'cors'], function(){
+  route::group(['prefix' => 'auth', 'middleware' => 'cors'], function(){
   route::post('register', 'Auth\AuthController@register');
   route::post('login', 'Auth\AuthController@login');
   route::get('logout', 'Auth\AuthController@logout')->middleware('auth:api');
   route::get('user', 'Auth\AuthController@getUser')->middleware('auth:api'); //The authenticated user
   route::get('profile', 'Auth\AuthController@getProfile')->middleware('auth:api');
   route::get('users', 'Auth\AuthController@allUsers')->middleware('auth:api');
-  route::get('user/{id}', 'Auth\AuthController@getOneUser')->middleware('auth:api');
+  route::get('user/{id}', 'Auth\AuthController@getOneUser')->middleware('auth:api'); //get single user
   route::post('update-profile', 'Auth\AuthController@updateProfile')->middleware('auth:api');
 });
 
 Route::group(['prefix' => 'user', 'middlware' => 'cors'], function(){
-  route::get('photos', 'Photos\PhotoController@index');
-  route::post('add_photos', 'Photos\PhotoController@store');
+  route::get('photos', 'Photos\PhotoController@index')->middleware('auth:api');
+  route::post('add_photos', 'Photos\PhotoController@store')->middleware('auth:api');
 });
 
 //api/fake-data/faker; route

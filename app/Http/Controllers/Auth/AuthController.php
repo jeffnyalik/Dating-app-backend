@@ -137,7 +137,8 @@ class AuthController extends Controller
     public function getOneUser($id)
     {  
         try {
-            $user = User::findOrFail($id);
+            // $user = new UserResource(User::findOrFail($id));
+            $user = User::with('photos')->findOrFail($id);
             return response()->json($user, 200);
         } catch (\Throwable $th) {
            return response(['Error' => 'USER NOT FOUND'], 404);

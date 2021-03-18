@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     public function photos()
     {
-        return $this->belongsTo(Photo::class, 'photo_id', 'id');
+        return $this->hasMany(Photo::class);
     }
 
     public function genders()
