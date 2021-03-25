@@ -19,15 +19,17 @@ class User extends Authenticatable
      *
      * @var array
      */
-    public $timestamps = false;
+    // public $timestamps = false;
     protected $fillable = [
         'name', 
         'email',
         'password',
-        'gender_id',
-        'country_id',
         'dob',
         'city',
+        'known_as',
+        'gender_id',
+        'country_id',
+        'created_at',
         'image',
     ];
 
@@ -49,6 +51,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'dob' => 'datetime',
+        
     ];
 
     public function photos()

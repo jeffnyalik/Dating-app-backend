@@ -40,4 +40,12 @@ class PhotoController extends Controller
             }
       
     }
+
+    public function removePhotos()
+    {
+        $data = PhotoResource::collection(Photo::all());
+        $res = $data->delete();
+        return response()->json($res, 204);
+
+    }
 }

@@ -19,7 +19,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'username' => $this->name,
+            'name' => $this->name,
             'email' => $this->email,
             'knownAs' => $this->known_as,
             'bio' => $this->bio,
@@ -32,8 +32,8 @@ class UserResource extends JsonResource
             'city' => $this->city,
             'dob' => $this->dob,
             'image' => $this->image,
-            'photos' => new PhotoResource($this->photos),
-            'gender' => new GenderResource($this->genders),
+            // 'photos' => new PhotoResource($this->photos),
+            'gender_name' => new GenderResource($this->genders),
             'country' => new CountryResource($this->countries),
         ];
     }

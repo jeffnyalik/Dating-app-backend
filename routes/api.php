@@ -26,11 +26,21 @@ use Illuminate\Support\Facades\Route;
   route::post('update-profile', 'Auth\AuthController@updateProfile')->middleware('auth:api');
 });
 
+//countries and genders;
+Route::group(['prefix' => 'user', 'middlware' => 'cors'], function(){
+  route::get('countries', 'Country\CountryController@index');
+  route::get('genders', 'Gender\GenderController@index');
+});
+
+//photo and gallery
+
 Route::group(['prefix' => 'user', 'middlware' => 'cors'], function(){
   route::get('photos', 'Photos\PhotoController@index')->middleware('auth:api');
   route::post('add_photos', 'Photos\PhotoController@store')->middleware('auth:api');
 });
 
+
+//test endpoint
 //api/fake-data/faker; route
 route::prefix('fake-data')->group(function(){
   route::get('/faker', 'FakeController@index')->middleware('auth:api');

@@ -13,13 +13,13 @@ class Photo extends Model
     ];
 
     public function users(){
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-public function save(array $options = array())
-{
-    $this->user_id = auth()->id();
-    parent::save($options);
-}
+    public function save(array $options = array())
+    {
+        $this->user_id = auth()->id();
+        parent::save($options);
+    }
 
 }

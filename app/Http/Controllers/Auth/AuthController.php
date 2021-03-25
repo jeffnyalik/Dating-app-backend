@@ -3,16 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Photos\PhotoResource;
+use App\Http\Resources\Users\User as UsersUser;
 use App\Http\Resources\Users\UserResource;
-use App\Models\Photos\Photo;
 use App\User;
-use Illuminate\Contracts\Validation\Validator as ValidationValidator;
-use Illuminate\Http\Client\ResponseSequence;
-use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -81,14 +77,16 @@ class AuthController extends Controller
         return response($response, 200);
     }
 
-    public function getUser(Request $request){
-        return $request->user();
+    public function getUser(){
+        $user = new UserResource(Auth::user());
+        return response()->json($user);
     }
 
     public function getProfile()
     {   
         $profile = new UserResource(Auth::user());
-        return response(['profile' => $profile], 200);
+        return response()->json($profile, 200);
+      
     }
 
     public function updateProfile(Request $request)
@@ -98,6 +96,7 @@ class AuthController extends Controller
         $data->name = $request->input('name');
         $data->known_as = $request->input('known_as');
         $data->bio = $request->input('bio');
+        $data->age = $request->input('age');
         $data->looking_for = $request->input('looking_for');
         $data->last_active = $request->input('last_active');
         $data->interests = $request->input('interests');
@@ -129,16 +128,19 @@ class AuthController extends Controller
 
     public function allUsers()
     {
-        $users = UserResource::collection(User::all());
+        $users = UserResource::collection(User::where('id', '!=', auth()->id())->get());
         return response()->json($users);
+
+        // $users = new UsersUser(User::paginate(5));
+        // return response(['users' => $users], 200);
     }
 
     //get a specific user
     public function getOneUser($id)
     {  
         try {
-            // $user = new UserResource(User::findOrFail($id));
-            $user = User::with('photos')->findOrFail($id);
+            // $user = new UserResource(User::with('photos')->findOrFail($id));
+            $user = User::with('photos', 'genders', 'countries')->findOrFail($id);
             return response()->json($user, 200);
         } catch (\Throwable $th) {
            return response(['Error' => 'USER NOT FOUND'], 404);
