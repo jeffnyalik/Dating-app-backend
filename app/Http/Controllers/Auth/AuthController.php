@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Users\User as UsersUser;
 use App\Http\Resources\Users\UserResource;
+use App\Models\Photos\Photo;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
@@ -85,8 +86,7 @@ class AuthController extends Controller
     public function getProfile()
     {   
         $profile = new UserResource(Auth::user());
-        return response()->json($profile, 200);
-      
+        return response()->json($profile, 200);      
     }
 
     public function updateProfile(Request $request)

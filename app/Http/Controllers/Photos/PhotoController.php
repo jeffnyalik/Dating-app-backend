@@ -5,38 +5,37 @@ namespace App\Http\Controllers\Photos;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Photos\PhotoResource;
 use App\Models\Photos\Photo;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class PhotoController extends Controller
 {
     public function index()
     {   
-        $res = PhotoResource::collection(Photo::all());
-        return response(['photos' => $res], 200); 
+        // $res = PhotoResource::collection(Photo::all());
+        $res = Auth::user()->photos;
+        return response()->json($res);
     }
 
     public function store(Request $request)
     {
-            $images= [];
             if($request->hasFile('photos'))
-            {
+            {   
                 $images = $request->file('photos');
                 foreach($images as $image)
                 {
                     $name = time().rand(1, 100).'.'.$image->extension();
-                    $images[] = $name;
+                    $images = $name;
                     $path = $image->storeAs('profile', $name, 'public');
                     
-                    $res = new PhotoResource(
-                        Photo::create([
-                            'caption' => $request->caption,
-                            'photos' => 'http://127.0.0.1:8000'.'/storage/'.$path,
-                    
-                        ])
-                        );
+                    $save = new Photo();
+                    $save->caption = $request->caption;
+                    $save->photos = 'http://127.0.0.1:8000'.'/storage/'.$path;
+                    $save->save();
                 }
-    
-                return response(['pics' => $res], 201);
+                return response()->json($save, 201);
             }
       
     }
